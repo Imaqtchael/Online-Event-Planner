@@ -1,0 +1,76 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Planner 🎉 | Michael Justin Barcenas</title>
+    <link rel="stylesheet" href="css/calendar.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+    <script src="js/calendar.js" defer type="module"></script>
+    <script src="js/index.js" defer type="module"></script>
+</head>
+
+<body>
+    <nav>
+        <p>Event Planner 🎉</p>
+    </nav>
+    <div class="container">
+        <div class="wrapper">
+            <header>
+                <p class="current-year"></p>
+                <div class="icons">
+                    <span id="prev" class="material-symbols-rounded">chevron_left</span>
+                    <span id="next" class="material-symbols-rounded">chevron_right</span>
+                </div>
+            </header>
+        </div>
+        <div class="notes">
+            <textarea>Start a note...</textarea>
+        </div>
+        <div class="events">
+            <table class="ListView-Control">
+                <thead>
+                    <tr>
+                        <th>Event Name</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th style="width: 6rem;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="Event-Body">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="Add-Event">
+        <div class="Add-Event-Content">
+            <div class="Add-Event-Header">
+                <input type="text" id="Add-EventName" class="Textbox-Control fill" placeholder="Enter event name">
+                <input type="text" id="Add-EventDate" class="Textbox-Control fill" readonly>
+                <input type="text" id="Add-EventLocation" class="Textbox-Control fill" placeholder="Enter event location">
+            </div>
+            <div class="Add-Event-Body">
+                <button id="Add-Event-Add-Guest" class="Button-Blue">ADD GUEST</button>
+            </div>
+            <button id="Add-Event-Button" class="Button-Green">ADD EVENT</button>
+        </div>
+    </div>
+    <div id="Edit-Event">
+        <div class="Edit-Event-Content">
+            <div class="Edit-Event-Header">
+                <input type="text" id="Edit-EventName" class="Textbox-Control fill" placeholder="Edit event name">
+                <input type="text" id="Edit-EventDate" class="Textbox-Control fill" readonly>
+                <input type="text" id="Edit-EventLocation" class="Textbox-Control fill" placeholder="Edit event location">
+            </div>
+            <div class="Edit-Event-Body">
+                <button id="Edit-Event-Add-Guest" class="Button-Blue">ADD GUEST</button>
+            </div>
+            <button id="Edit-Event-Button" class="Button-Green">EDIT EVENT</button>
+        </div>
+    </div>
+    <footer>Project by: Michael Justin Barcenas</footer>
+</body>
+
+</html>

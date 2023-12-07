@@ -1,0 +1,121 @@
+.wrapper {
+    grid-column: span 3;
+    overflow: auto;
+    background: #fff;
+    border-radius: 10px 0 0 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid #e5e7eb;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px -30px 10px -28px inset;
+}
+
+.wrapper header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    padding: 25px 30px 10px;
+    grid-column: span 3;
+    justify-content: space-between;
+    background-color: #f9fafb;
+    border: .5px solid #e5e7eb;
+}
+
+header .icons {
+    display: flex;
+}
+
+header .icons span {
+    height: 38px;
+    width: 38px;
+    margin: 0 1px;
+    cursor: pointer;
+    color: #878787;
+    text-align: center;
+    line-height: 38px;
+    font-size: 1.9rem;
+    user-select: none;
+    border-radius: 50%;
+}
+
+.icons span:last-child {
+    margin-right: -10px;
+}
+
+header .icons span:hover {
+    background: #f2f2f2;
+}
+
+header .current-year {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.calendar {
+    z-index: 0;
+    padding: 20px;
+}
+
+.calendar-month {
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.calendar ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    text-align: center;
+}
+
+.calendar .days {
+    margin-bottom: 20px;
+    border-radius: 1rem;
+    overflow: hidden;
+    border: .5px solid #e5e7eb;
+}
+
+.calendar li {
+    color: #333;
+    width: calc(100% / 7);
+    font-size: .9rem;
+}
+
+.calendar .weeks li {
+    font-weight: 500;
+    cursor: default;
+}
+
+.calendar .days li {
+    z-index: 1;
+    cursor: pointer;
+    position: relative;
+    padding: .2rem;
+    border: .5px solid #e5e7eb;
+}
+
+.days li.inactive {
+    color: #aaa;
+    background-color: rgb(243 244 246 / 1);
+}
+
+.days li.active {
+    color: #fff;
+}
+
+.days li.booked {
+    color: white;
+    background-color: #f1ba40;
+}
+
+.days li.active {
+    background-color: #9B59B6;
+}
+
+.days li:hover:not([class]) {
+    color: white;
+    background-color: dodgerblue;
+}
