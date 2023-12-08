@@ -1,11 +1,4 @@
-let nav = document.querySelector("nav");
-let body = document.querySelector("body");
-let container = document.querySelector(".container");
-let footer = document.querySelector("footer");
-
-container.style.height = body.getBoundingClientRect().height - nav.getBoundingClientRect().height - footer.getBoundingClientRect().height;
-
-// Check for the database 
+// Database variables declaration and initialization 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
 import { getDatabase, ref, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
@@ -30,9 +23,18 @@ onValue(notes, function(snapshot) {
     note.value = savedNote[0];
 });
 
+// Set the height of the container div to be just equal to the client screen height
+
+let nav = document.querySelector("nav");
+let body = document.querySelector("body");
+let container = document.querySelector(".container");
+let footer = document.querySelector("footer");
+
+container.style.height = body.getBoundingClientRect().height - nav.getBoundingClientRect().height - footer.getBoundingClientRect().height;
+
 let note = document.querySelector("textarea");
 note.addEventListener("focusout", () => {
-    // Resets the value of the notes if it has no value else push the new notes to the database
+    // Resets the value of the notes if it has no value and push it to the database
     if (note.value === "") {
         note.value = "Start a note...";
     }
@@ -44,6 +46,7 @@ note.addEventListener("focusout", () => {
 
 let wrapper = document.querySelector(".wrapper");
 wrapper.addEventListener('dblclick', (event) => {
+    // Checks for user's mouse event and if they click a date show the add event modal
     if (event.target.tagName.toLowerCase() == "li" && !event.target.hasAttribute("class") && event.target.parentNode.classList.contains("days")) {
         let clickedDate = event.target.innerText;
         let clickedMonth = event.target.closest(".calendar").firstChild.innerText;
@@ -58,6 +61,8 @@ wrapper.addEventListener('dblclick', (event) => {
 let addEventAddGuest = document.querySelector("#Add-Event-Add-Guest");
 let addEventBody = document.querySelector(".Add-Event-Body");
 addEventAddGuest.addEventListener("click", () => {
+    // Adds a new input element to the add event body 
+
     let input = document.createElement("input");
     input.type = "text";
     input.className = "Textbox-Control fill";
@@ -68,11 +73,10 @@ addEventAddGuest.addEventListener("click", () => {
 
 function clearWebsite() {
     // Clear the booked dates in the calendar with their id and classes
-    // And clears the event list also
+    // and the events list
 
     let bookedDates = document.querySelectorAll("li .booked");
     for (let i = 0; bookedDates.length; i++) {
-        bookedDates[i].removeAttribute("id");
         bookedDates[i].removeAttribute("class");
     }
 
@@ -81,7 +85,7 @@ function clearWebsite() {
 }
 
 function readFirebase(db) {
-    // Reads the firebase results and put displays it into the website
+    // Reads the firebase results and displays it into the website
     let events = Object.entries(db);
     for (let i = 0; i < events.length; i++) {
         let event = events[i];
@@ -119,30 +123,37 @@ function readFirebase(db) {
 }
 
 function showAddEventModal() {
+    // Shows the add event modal
     document.querySelector("#Add-Event").style.display = "grid";
 }
 
 function hideAddEventModal() {
+    // Hides the add event modal
     document.querySelector("#Add-Event").style.display = "none";
 }
 
 function showEditEventModal() {
+    // Shows the edit event modal
     document.querySelector("#Edit-Event").style.display = "grid";
 }
 
 function hideEditEventModal() {
+    // Hides the edit event modal
     document.querySelector("#Edit-Event").style.display = "none";
 }
 
 function validateAddEventModal() {
+    // Check for the validity of the edit event modal's input
     return document.querySelector("#Add-EventName").value.trim() != "" && document.querySelector("#Add-EventDate").value.trim() != "" && document.querySelector("#Add-EventLocation").value.trim() != "";
 }
 
 function validateEditEventModal() {
+    // Check for the validity of the edit event modal's input
     return document.querySelector("#Edit-EventName").value.trim() != "" && document.querySelector("#Edit-EventDate").value.trim() != "" && document.querySelector("#Edit-EventLocation").value.trim() != "";
 }
 
 function clearAddEventModal() {
+    // Clears the edit event modal's inputs
     document.querySelector("#Add-EventName").value = "";
     document.querySelector("#Add-EventDate").value = "";
     document.querySelector("#Add-EventLocation").value = "";
@@ -154,6 +165,7 @@ function clearAddEventModal() {
 }
 
 function clearEditEventModal() {
+    // Clears the edit event modal's inputs
     document.querySelector("#Edit-EventName").value = "";
     document.querySelector("#Edit-EventDate").value = "";
     document.querySelector("#Edit-EventLocation").value = "";
@@ -165,12 +177,15 @@ function clearEditEventModal() {
 }
 
 function clearEventsEntry() {
+    // Clear all the events that is in the event body div
     let eventBody = document.querySelector("#Event-Body");
     eventBody.innerHTML = "";
 }
 
 let addEventButton = document.querySelector("#Add-Event-Button");
 addEventButton.addEventListener("click", () => {
+    // Checks if the modal's input are all valid and if 
+    // it is, then update the value that is stored in the firebase
     if (!validateAddEventModal()) {
         return;
     }
@@ -180,7 +195,6 @@ addEventButton.addEventListener("click", () => {
     let eventLocation = document.querySelector("#Add-EventLocation").value.trim();
     let guestList = Array.from(document.querySelectorAll(".Add-Event-Body > input")).filter(guestEntry => guestEntry.value.trim() != "").map(object => object.value.trim());
 
-    // Store all values to firebase
     let eventDetails = {
         eventName: eventName,
         eventDate: eventDate,
@@ -195,6 +209,8 @@ addEventButton.addEventListener("click", () => {
 
 let editEventButton = document.querySelector("#Edit-Event-Button");
 editEventButton.addEventListener("click", async() => {
+    // Checks if the modal's input are all valid and if 
+    // it is, then update the value that is stored in the firebase
     if (!validateEditEventModal()) {
         return;
     }
@@ -205,7 +221,6 @@ editEventButton.addEventListener("click", async() => {
     let eventLocation = document.querySelector("#Edit-EventLocation").value.trim();
     let guestList = Array.from(document.querySelectorAll(".Edit-Event-Body > input")).filter(guestEntry => guestEntry.value.trim() != "").map(object => object.value.trim());
 
-    // Store all values to firebase
     let eventDetails = {
         eventName: eventName,
         eventDate: eventDate,
@@ -221,7 +236,10 @@ editEventButton.addEventListener("click", async() => {
 
 let sortableHeaders = Array.from(document.querySelectorAll(".Listview-Control th"));
 let eventNameHeaders = sortableHeaders[0];
+let eventDates = sortableHeaders[1];
+
 eventNameHeaders.addEventListener("click", () => {
+    // Sorts the event's entry using its date
     let eventNames = Array.from(document.querySelectorAll(".Listview-Control tbody tr td:first-child")).map((event) => {
         return [event.innerText, event.parentNode];
     }).sort().map(event => { return event[1] });
@@ -239,14 +257,13 @@ eventNameHeaders.addEventListener("click", () => {
 
 });
 
-let eventDates = sortableHeaders[1];
 eventDates.addEventListener("click", () => {
+    // Sorts the event's entry using its date
     let eventNames = Array.from(document.querySelectorAll(".Listview-Control tbody tr td:nth-child(2")).map((event) => {
         return [event.innerText, event.parentNode];
-    }).sort(function(date1, date2) { console.log(date1); return new Date(date1[0]) - new Date(date2[0]) }).map(event => { return event[1] });
+    }).sort(function(date1, date2) { return new Date(date1[0]) - new Date(date2[0]) }).map(event => { return event[1] });
 
     clearEventsEntry();
-    console
     let eventBody = document.querySelector("#Event-Body");
     if (eventBody.hasAttribute("earliest")) {
         eventBody.append(...eventNames.reverse());
@@ -259,6 +276,8 @@ eventDates.addEventListener("click", () => {
 
 let addEvent = document.querySelector("#Add-Event");
 addEvent.addEventListener("dblclick", (event) => {
+    // Clears the show the add event modal when the user perform a double click on
+    // a calendar date
     if (event.target.id == "Add-Event" && event.target.tagName.toLowerCase() == "div") {
         clearAddEventModal();
         addEvent.style.display = "none";
@@ -267,6 +286,8 @@ addEvent.addEventListener("dblclick", (event) => {
 
 let editEvent = document.querySelector("#Edit-Event");
 editEvent.addEventListener("dblclick", (event) => {
+    // Clears the edit event modal and shows it if the user perform a double click 
+    // on one of the event's entry
     if (event.target.id == "Edit-Event" && event.target.tagName.toLowerCase() == "div") {
         clearEditEventModal();
         editEvent.style.display = "none";
@@ -275,6 +296,9 @@ editEvent.addEventListener("dblclick", (event) => {
 
 let eventBody = document.querySelector("#Event-Body");
 eventBody.addEventListener("click", (event) => {
+    // Checks for the mouse event performed by the user and if it's for the delete
+    // button then it will remove it fromt he firebase which will automatically 
+    // refresh the list of the events
     if (event.target.tagName.toLowerCase() == "button" && event.target.innerText == "DELETE") {
         let eventDate = event.target.parentNode.parentNode.children[1].innerText;
         let eventCalendarDate = document.getElementById(eventDate);
@@ -289,7 +313,9 @@ eventBody.addEventListener("click", (event) => {
         remove(fireBaseEntry);
     }
 });
+
 eventBody.addEventListener("dblclick", (event) => {
+    // Lets the user to edit an existing event
     if (event.target.tagName.toLowerCase() == "tr" || event.target.tagName.toLowerCase() == "td") {
         let uniqueID = event.target.closest("tr").getAttribute("unique-id");
         onValue(ref(database, "Events/" + uniqueID), function(snapshot) {
@@ -323,6 +349,11 @@ eventBody.addEventListener("dblclick", (event) => {
     }
 });
 
+
+//
+// Functions and variables related to the calendar
+//
+
 const currentYear = document.querySelector(".current-year"),
     prevNextIcon = document.querySelectorAll(".icons span");
 
@@ -342,10 +373,10 @@ function clearCalendar() {
     }
 }
 
-const renderCalendar = () => {
+function renderCalendar() {
+    // Generate the calendar for the entire year
     let wrapperElements = document.querySelector(".wrapper");
     for (let month = 0; month < 12; month++) {
-        // Create HTML elements one by one
         let calendarDiv = document.createElement("div");
         calendarDiv.className = "calendar";
 
@@ -366,44 +397,43 @@ const renderCalendar = () => {
         let daysUL = document.createElement("ul");
         daysUL.className = "days";
 
-        let firstDayofMonth = new Date(currYear, month, 1).getDay(), // getting first day of month
-            lastDateofMonth = new Date(currYear, month + 1, 0).getDate(), // getting last date of month
-            lastDateofLastMonth = new Date(currYear, month, 0).getDate(); // getting last date of previous month
+        let firstDayofMonth = new Date(currYear, month, 1).getDay(),
+            lastDateofMonth = new Date(currYear, month + 1, 0).getDate(),
+            lastDateofLastMonth = new Date(currYear, month, 0).getDate();
         let liTag = "";
 
 
-        for (let i = firstDayofMonth; i > 0; i--) { // creating li of previous month last days
+        for (let i = firstDayofMonth; i > 0; i--) {
             liTag += `<li class="inactive">${lastDateofLastMonth - i + 1}</li>`;
         }
 
-        for (let i = 1; i <= lastDateofMonth; i++) { // creating li of all days of current month
-            // adding active class to li if the current day, month, and year matched
+        for (let i = 1; i <= lastDateofMonth; i++) {
             let isToday = i === date.getDate() && month === new Date().getMonth() &&
                 currYear === new Date().getFullYear() ? "class='active'" : "";
 
             liTag += `<li id="${months[month]} ${i}, ${currYear}" ${isToday}>${i}</li>`;
         }
 
-        for (let i = 0; i < (42 - (firstDayofMonth + lastDateofMonth)); i++) { // creating li of next month first days
+        for (let i = 0; i < (42 - (firstDayofMonth + lastDateofMonth)); i++) {
             liTag += `<li class="inactive">${i + 1}</li>`;
         }
         daysUL.innerHTML = liTag;
         calendarDiv.append(calendarMonth, weeksUL, daysUL);
         wrapperElements.appendChild(calendarDiv);
     }
-    currentYear.innerText = `${currYear}`; // passing current mon and yr as currentDate text
+    currentYear.innerText = `${currYear}`;
 }
-renderCalendar();
 
-prevNextIcon.forEach(icon => { // getting prev and next icons
-    icon.addEventListener("click", () => { // adding click event on both icons
-        // if clicked icon is previous icon then decrement current month by 1 else increment it by 1
+renderCalendar(); // Render the calendar when user launches the site
+
+prevNextIcon.forEach(icon => {
+    // Add functions the the icons where user can check other year's calendar
+    icon.addEventListener("click", () => {
         currYear = icon.id === "prev" ? currYear - 1 : currYear + 1;
         clearCalendar();
-        renderCalendar(); // calling renderCalendar function
+        renderCalendar();
 
         onValue(eventsPlanned, function(snapshot) {
-            clearWebsite();
             let events = snapshot.val();
 
             readFirebase(events);
